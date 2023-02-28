@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "sites-count"
+version = "0.1.0"
+description = "Count all sites in radio network by technologies and vendors"
+authors = ["Ramil Albakov <ramil.albakov2@gmail.com>"]
+readme = "README.md"
+packages = [{include = "sites_count"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.1"
+wemake-python-styleguide = "^0.17.0"
+pytest-cov = "^4.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
