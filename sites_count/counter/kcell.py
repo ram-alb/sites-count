@@ -2,6 +2,7 @@
 
 import re
 
+from sites_count.counter.counter import count_sites
 from sites_count.sql import NetworkLive
 
 gsm_select = """
@@ -64,13 +65,4 @@ def count_kcell_sites():
         'iot': iot_select,
     }
     network_live = NetworkLive(sql_selects)
-    unique_ids = set()
-    sites = {}
-    for tech in sql_selects.keys():
-        selected_sites = network_live.execute_sql('select', tech)
-        site_ids = {parse_kcell_site_id(*row) for row in selected_sites}
-        sites_count = len(site_ids)
-        sites[tech] = sites_count
-        unique_ids.update(site_ids)
-    sites['total'] = len(unique_ids)
-    return sites
+    return count_sites(network_live, parse_kcell_site_id)

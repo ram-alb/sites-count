@@ -15,8 +15,7 @@ class NetworkLive(object):
         Args:
             sql_selects: sql commands to get data by technologies
         """
-        for tech, sql_command in sql_selects.items():
-            setattr(self, tech, sql_command)
+        self.sql_selects = sql_selects
 
     def execute_sql(self, sql_type: str, table: str):
         """
@@ -41,11 +40,7 @@ class NetworkLive(object):
         ) as connection:
             cursor = connection.cursor()
             if sql_type == 'select':
-                select_commands = {
-                    'gsm': self.gsm_select,
-                    'wcdma': self.wcdma_select,
-                }
-                cursor.execute(select_commands[table])
+                cursor.execute(self.sql_selects[table])
                 return cursor.fetchall()
             elif sql_type == 'insert':
-                pass
+                return []

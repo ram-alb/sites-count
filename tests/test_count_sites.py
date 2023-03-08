@@ -1,35 +1,26 @@
 """Test count sites functionality."""
 
-from sites_count.counter.index import count_sites_total
+from sites_count.counter.kcell import count_kcell_sites
+from sites_count.counter.tele2 import count_tele2_sites
 from sites_count.sql import NetworkLive
 
 
-def test_count_sites_total():
-    """Test count_sites_total function."""
-
-    def fake_execute_sql(self, sql_type, table):
-        selects = {
-            'gsm': [
-                ('42468SHORJANDIL',),
-                ('51002DISTR11H6',),
-                ('42828TURKONGRES',),
-            ],
-            'wcdma': [
-                ('42468SHORJANDIL',),
-                ('51002DISTR11H6',),
-                ('42828TURKONGRES',),
-            ],
-            'lte': [('ERBS_51002_DISTR11_KB',), ('gRBS_42828_TURKONGRES',)],
-            'nr5g': [('gRBS_42828_TURKONGRES',)],
-            'iot': [('ERBS_06076_SHEVSHENKO_2KB',)],
-        }
-
-        if sql_type == 'select':
-            return selects[table]
-
-    NetworkLive.execute_sql = fake_execute_sql
-    sites = count_sites_total()
+def test_count_kcell_sites(fake_kcell_execute_sql):
+    """Test count_kcell_sites function."""
+    NetworkLive.execute_sql = fake_kcell_execute_sql
+    sites = count_kcell_sites()
 
     assert sites['gsm'] == 3
     assert sites['lte'] == 2
     assert sites['total'] == 4
+
+
+def test_count_tele2_sites(fake_tele2_execute_sql):
+    """Test count_tele2_sites function."""
+    NetworkLive.execute_sql = fake_tele2_execute_sql
+    sites = count_tele2_sites()
+
+    assert sites['gsm'] == 3
+    assert sites['wcdma'] == 3
+    assert sites['lte'] == 3
+    assert sites['total'] == 5
