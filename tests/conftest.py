@@ -37,3 +37,13 @@ def fake_tele2_execute_sql():
         'lte': [('AL4099',), ('AL8310',), ('SE4029',)],
     }
     return get_fake_execute_sql(selects)
+
+
+@pytest.fixture()
+def fake_beeline_execute_sql():
+    selects = {
+        'gsm': [('KOK_Business_GU21L821BK',), ('KOK_Sadik_GU21L821BK',)],
+        'wcdma': [('KOK_Business_GU21L821BK',), ('KAR_Aktailak_UL21BKTZ',)],
+        'lte': [('KOK_Business_GU21L821BK',), ('NUR_Zemkom_nL81821GU21BK',)],
+    }
+    return get_fake_execute_sql(selects)
